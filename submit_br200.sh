@@ -4,10 +4,7 @@
 #SBATCH --nodes=8
 #SBATCH -p gpu
 #SBATCH --gpus-per-node 4
-#SBATCH -A r00114
-#SBATCH --time=00:30:00
-#SBATCH --output=/N/u/sunbaix/BigRed200/comm_bench/logs/newb8node_%j.out
-#SBATCH --error=/N/u/sunbaix/BigRed200/comm_bench/logs/newb8node_%j.err
+
 
 # Figure out training environment
 master_addr=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)
@@ -28,8 +25,8 @@ fi
 
 #PRELOAD+="source ~/.bashrc ; "
 PRELOAD="module load miniconda/4.12.0 ; "
-PRELOAD+="conda activate bert-pytorch ; "
-PRELOAD+="cd /N/u/sunbaix/BigRed200/comm_bench ; "
+PRELOAD+="conda activate xxx ; "
+PRELOAD+="cd comm_bench ; "
 # torchrun launch configuration
 LAUNCHER="python3 -m torch.distributed.launch "
 #LAUNCHER+="--nnodes=$NNODES --node_rank=$RANK --nproc_per_node=4 --master_addr $MASTER_ADDR --master_port $MASTER_PORT "
@@ -39,7 +36,7 @@ LAUNCHER="python3 -m torch.distributed.launch "
 #     LAUNCHER+="--rdzv_backend=c10d --rdzv_endpoint=$MASTER_RANK "
 # fi
 
-CMD="/N/u/sunbaix/BigRed200/comm_bench/run.py "
+CMD="run.py "
 FULL_CMD=" $PRELOAD $LAUNCHER $CMD $@ "
 echo "Training Command: $FULL_CMD"
 
